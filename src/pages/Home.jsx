@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories, getQuery } from '../services/api';
+import { getCategories, getQuery, getCategory } from '../services/api';
 
 class Home extends React.Component {
   constructor() {
@@ -8,12 +8,12 @@ class Home extends React.Component {
     this.state = {
       categories: [],
       input: '',
-      // data: [],
     };
   }
 
   async componentDidMount() {
     const data = await getCategories();
+    console.log(data);
     this.setState({
       categories: data,
     });
@@ -23,21 +23,19 @@ class Home extends React.Component {
     this.setState({ input: event.target.value });
   }
 
-  // handleChange({ target }) {
-  //   const { name } = target;
-  //   const { value } = target;
-
-  //   this.setState({
-  //     [name]: value,
-  //   });
-  // }
-
   handleClick = async (event) => {
     console.log(event.target.value);
     const { input } = this.state;
     this.setState({ input: '' });
     const response = await getQuery(input);
     console.log(response);
+    this.setState({ data: response });
+  }
+
+  handleCategory= async (event) => {
+    console.log(event.target);
+    const { id } = event.target;
+    const response = await getCategory(id);
     this.setState({ data: response });
   }
 
@@ -71,6 +69,8 @@ class Home extends React.Component {
         </p>
         {categories.map((category) => (
           <button
+            id={ category.id }
+            onClick={ this.handleCategory }
             key={ category.id }
             type="button"
             data-testid="category"
