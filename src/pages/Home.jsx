@@ -23,8 +23,7 @@ class Home extends React.Component {
     this.setState({ input: event.target.value });
   }
 
-  handleClick = async (event) => {
-    console.log(event.target.value);
+  handleClick = async () => {
     const { input } = this.state;
     this.setState({ input: '' });
     const response = await getQuery(input);
