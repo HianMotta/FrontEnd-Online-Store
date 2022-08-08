@@ -86,11 +86,13 @@ class Home extends React.Component {
                 <p>{ title }</p>
                 <img src={ thumbnail } alt={ title } />
                 <p>{ price }</p>
+                <Link data-testid="product-detail-link" to={ `/productdetail/${id}` }>
+                  Detalhes do produto
+                </Link>
               </span>
             ))}
           </section>
         ) : <p>Nenhum produto foi encontrado</p>}
-
       </div>
     );
   }
