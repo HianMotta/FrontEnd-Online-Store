@@ -8,6 +8,7 @@ class Home extends React.Component {
     this.state = {
       categories: [],
       input: '',
+      favorites: [],
     };
   }
 
@@ -37,6 +38,16 @@ class Home extends React.Component {
     const { id } = event.target;
     const response = await getCategory(id);
     this.setState({ data: response });
+  }
+
+  handleProduct = (event) => {
+    this.setState((prevState) => {
+      const newFavorites = [...prevState.favorites, event];
+      localStorage.setItem('produtcs', JSON.stringify(newFavorites));
+      return {
+        favorites: newFavorites,
+      };
+    });
   }
 
   render() {
@@ -82,14 +93,26 @@ class Home extends React.Component {
 
         { data ? (
           <section>
-            {data.results.map(({ thumbnail, id, title, price }) => (
-              <span data-testid="product" key={ id }>
-                <p>{ title }</p>
-                <img src={ thumbnail } alt={ title } />
-                <p>{ price }</p>
-                <Link data-testid="product-detail-link" to={ `/productdetail/${id}` }>
+            {data.results.map((produto) => (
+              <span data-testid="product" key={ produto.id }>
+                <p>{ produto.title }</p>
+                <img src={ produto.thumbnail } alt={ produto.title } />
+                <p>{ produto.price }</p>
+                <Link
+                  data-testid="product-detail-link"
+                  to={ `/productdetail/${produto.id}` }
+                >
                   Detalhes do produto
                 </Link>
+                <button
+                  type="button"
+                  data-testid="product-add-to-cart"
+                  onClick={ () => this.handleProduct(produto) }
+                  name="product"
+                >
+                  Comprar
+
+                </button>
               </span>
             ))}
           </section>
