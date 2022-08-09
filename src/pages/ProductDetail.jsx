@@ -8,6 +8,7 @@ class ProductDetail extends React.Component {
     super();
     this.state = {
       product: {},
+      favorites: [],
     };
   }
 
@@ -16,6 +17,16 @@ class ProductDetail extends React.Component {
     const response = await getProductByID(id);
     console.log(response);
     this.setState({ product: response });
+  }
+
+  handleProduct = (event) => {
+    this.setState((prevState) => {
+      const newFavorites = [...prevState.favorites, event];
+      localStorage.setItem('produtcs', JSON.stringify(newFavorites));
+      return {
+        favorites: newFavorites,
+      };
+    });
   }
 
   render() {
@@ -37,6 +48,15 @@ class ProductDetail extends React.Component {
             Carrinho
           </button>
         </Link>
+        <button
+          type="button"
+          data-testid="product-detail-add-to-cart"
+          onClick={ () => this.handleProduct(product) }
+          name="product"
+        >
+          Comprar
+
+        </button>
       </div>
 
     );
