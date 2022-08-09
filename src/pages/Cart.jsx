@@ -1,4 +1,5 @@
 import React from 'react';
+import EmptyCart from './EmptyCart';
 
 class Cart extends React.Component {
   constructor() {
@@ -16,10 +17,12 @@ class Cart extends React.Component {
 
   render() {
     const { products } = this.state;
+    console.log(products);
     return (
       <div>
-        {products.length === 0
-          ? (<p data-testid="shopping-cart-empty-message">Seu carrinho está vazio</p>) : (
+
+        { products === null
+          ? <EmptyCart /> : (
             products.map((produto) => (
               <span key={ produto.id }>
                 <h3 data-testid="shopping-cart-product-name">{produto.title}</h3>
@@ -29,12 +32,14 @@ class Cart extends React.Component {
 
             ))
           ) }
-        <p
-          data-testid="shopping-cart-product-quantity"
-        >
-          {products.length}
+        {products !== null && (
+          <p
+            data-testid="shopping-cart-product-quantity"
+          >
+            {products.length}
 
-        </p>
+          </p>
+        )}
       </div>
     );
   }
